@@ -1,0 +1,87 @@
+{
+	"name": "pipeline9",
+	"properties": {
+		"activities": [
+			{
+				"name": "Switch1",
+				"type": "Switch",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@if(\n    or(\n        equals(dayOfWeek(utcNow()), 0),\n        equals(dayOfWeek(utcNow()), 6)\n    ),\n    'Weekly',\n    'Daily'\n)",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "Daily1",
+							"activities": [
+								{
+									"name": "Execute Pipeline1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "Daily_PL",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true
+									}
+								}
+							]
+						},
+						{
+							"value": "Weekly1",
+							"activities": [
+								{
+									"name": "Execute Pipeline1_copy1",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"policy": {
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "Weekly_PL",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true
+									}
+								}
+							]
+						}
+					],
+					"defaultActivities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "BATCHTYPE",
+								"value": "NO BATCH TODAY"
+							}
+						}
+					]
+				}
+			}
+		],
+		"variables": {
+			"BATCHTYPE": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-09-08T02:19:07Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

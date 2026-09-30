@@ -1,0 +1,37 @@
+{
+	"name": "Sink_Dataset",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_source_adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "files",
+				"fileSystem": "bronze"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "claim_id",
+				"type": "String"
+			},
+			{
+				"name": "claim_amount",
+				"type": "String"
+			},
+			{
+				"name": "FILE_PATH",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

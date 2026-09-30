@@ -1,0 +1,38 @@
+{
+	"name": "ds_control_file",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_source_adls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "file_table_mapping.csv",
+				"folderPath": "input",
+				"fileSystem": "data"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "SNO",
+				"type": "String"
+			},
+			{
+				"name": "FILE_NAME",
+				"type": "String"
+			},
+			{
+				"name": "TABLE",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

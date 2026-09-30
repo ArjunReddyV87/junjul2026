@@ -1,0 +1,68 @@
+{
+	"name": "PL_Tumwin_ex_copy_target",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "@concat(\n  'SELECT SaleID, ProductID, CustomerID, Quantity, Amount, ModifiedDate ',\n  'FROM Sales WHERE ModifiedDate >= ''',\n  formatDateTime(pipeline().parameters.WindowStart, 'yyyy-MM-dd HH:mm:ss'),\n  ''' AND ModifiedDate < ''',\n  formatDateTime(pipeline().parameters.WindowEnd, 'yyyy-MM-dd HH:mm:ss'),\n  ''''\n)\n",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Sales",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ds_Sales_target",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
+		"parameters": {
+			"WindowStart": {
+				"type": "string"
+			},
+			"WindowEnd": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-09-21T02:23:03Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

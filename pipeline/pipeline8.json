@@ -1,0 +1,25 @@
+{
+	"name": "pipeline8",
+	"properties": {
+		"activities": [
+			{
+				"name": "Validation1",
+				"type": "Validation",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "DelimitedText1",
+						"type": "DatasetReference"
+					},
+					"timeout": "0.00:00:30",
+					"sleep": 5,
+					"minimumSize": 524288000
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-09-08T01:29:32Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

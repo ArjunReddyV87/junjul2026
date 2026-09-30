@@ -1,0 +1,132 @@
+{
+	"name": "PL_Files_Split",
+	"properties": {
+		"activities": [
+			{
+				"name": "Filter_for_csv_files",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "All Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('FileNames')",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@endsWith(item(), '.csv')\n\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "All Files",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileNames",
+					"value": {
+						"value": "@createArray('file1.csv','claims.csv','payment.csv','emp.txt','dept.txt')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "CSV Files List",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Filter_for_csv_files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "csvfiles_list",
+					"value": {
+						"value": "@activity('Filter_for_csv_files').output.Value\n\n",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Filter_for_txt_files",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "All Files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@variables('FileNames')",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@endswith(item(),'txt')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Text files list",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Filter_for_txt_files",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "textfiles_list",
+					"value": {
+						"value": "@activity('Filter_for_txt_files').output.Value\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"FileNames": {
+				"type": "Array"
+			},
+			"csvfiles_list": {
+				"type": "Array"
+			},
+			"textfiles_list": {
+				"type": "Array"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-09-06T02:05:26Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

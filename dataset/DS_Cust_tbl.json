@@ -1,0 +1,51 @@
+{
+	"name": "DS_Cust_tbl",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabase1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "CUSTOMER_ID",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "CUSTOMER_NAME",
+				"type": "varchar"
+			},
+			{
+				"name": "EMAIL",
+				"type": "varchar"
+			},
+			{
+				"name": "PHONE",
+				"type": "varchar"
+			},
+			{
+				"name": "CITY",
+				"type": "varchar"
+			},
+			{
+				"name": "CREATED_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			},
+			{
+				"name": "MODIFIED_DATE",
+				"type": "datetime",
+				"precision": 23,
+				"scale": 3
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "CUSTOMER"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

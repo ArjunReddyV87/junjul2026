@@ -1,0 +1,134 @@
+{
+	"name": "pipeline3",
+	"properties": {
+		"activities": [
+			{
+				"name": "Append variable1",
+				"type": "AppendVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "V_NUM_LIST",
+					"value": "10"
+				}
+			},
+			{
+				"name": "Append variable1_copy1",
+				"type": "AppendVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "V_NUM_LIST",
+					"value": "20"
+				}
+			},
+			{
+				"name": "Append variable1_copy1_copy1",
+				"type": "AppendVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable1_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "V_NUM_LIST",
+					"value": "30"
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Append variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "V_FINAL_NUM_LIST",
+					"value": {
+						"value": "@variables('V_NUM_LIST')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable1_copy1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Append variable1_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "V_FINAL_NUM_LIST",
+					"value": {
+						"value": "@variables('V_NUM_LIST')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable1_copy1_copy1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Append variable1_copy1_copy1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "V_FINAL_NUM_LIST",
+					"value": {
+						"value": "@variables('V_NUM_LIST')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"variables": {
+			"V_NUM_LIST": {
+				"type": "Array"
+			},
+			"V_FINAL_NUM_LIST": {
+				"type": "Array"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-09-04T02:28:46Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

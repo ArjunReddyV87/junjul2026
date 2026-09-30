@@ -1,0 +1,29 @@
+{
+	"name": "Weekly_PL",
+	"properties": {
+		"activities": [
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "batch_type",
+					"value": "Weekly batch"
+				}
+			}
+		],
+		"variables": {
+			"batch_type": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-09-08T02:19:07Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

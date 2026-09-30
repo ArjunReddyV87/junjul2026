@@ -1,0 +1,130 @@
+{
+	"name": "PL_LOAD_CUST_FULL",
+	"properties": {
+		"activities": [
+			{
+				"name": "Copy_full_custdata_to_adls",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Get_Latest_mod_Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"sink": {
+						"type": "DelimitedTextSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "DelimitedTextWriteSettings",
+							"quoteAllText": true,
+							"fileExtension": ".txt"
+						}
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "DS_Cust_tbl",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "DS_Bronze",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "Get_Latest_mod_Date",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": "SELECT MAX(MODIFIED_DATE) LAT_MOD_DATE\nFROM CUSTOMER ;",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "DS_Cust_tbl",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Load Water mark table",
+				"type": "Script",
+				"dependsOn": [
+					{
+						"activity": "Copy_full_custdata_to_adls",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"linkedServiceName": {
+					"referenceName": "AzureSqlDatabase1",
+					"type": "LinkedServiceReference"
+				},
+				"typeProperties": {
+					"scripts": [
+						{
+							"type": "Query",
+							"text": {
+								"value": "INSERT INTO WATERMARK (\n    WATERMARK_ID,\n    SOURCE_NAME,\n    TABLE_NAME,\n    WATERMARK_COLUMN,\n    WATERMARK_VALUE,\n    LAST_UPDATED_DATE,\n    COMMENTS\n)\nVALUES (\n    1,\n    'Retail_ADLS',\n    'CUSTOMER',\n    'MODIFIED_DATE',\n    '@{activity('Get_Latest_mod_Date').output.firstRow.LAT_MOD_DATE}',\n    GETDATE(),\n    'Initial load watermark for CUSTOMER table'\n);",
+								"type": "Expression"
+							}
+						}
+					],
+					"scriptBlockExecutionTimeout": "02:00:00"
+				}
+			}
+		],
+		"annotations": [],
+		"lastPublishTime": "2026-09-18T01:58:24Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

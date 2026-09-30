@@ -1,0 +1,29 @@
+{
+	"name": "adfjul2026dev",
+	"properties": {
+		"globalParameters": {
+			"Evnrionment": {
+				"type": "string",
+				"value": "Dev"
+			},
+			"Batch_Type": {
+				"type": "string",
+				"value": "Daily"
+			},
+			"Email_List": {
+				"type": "string",
+				"value": "varjunreddy87@gmail.com,varjunreddy872@gmail.com,"
+			}
+		},
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "centralindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "d570294f-23fe-454d-9da1-63d5718e6023",
+		"tenantId": "1b1110bb-63bf-43a2-88c8-fd1a2f53d637"
+	}
+}
